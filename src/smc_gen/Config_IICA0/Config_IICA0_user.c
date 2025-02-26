@@ -73,6 +73,7 @@ static void r_Config_IICA0_callback_master_sendend(void)
 {
     SPT0 = 1U;
 /* Start user code for r_Config_IICA0_callback_master_sendend. Do not edit comment generated here */
+    rm_comms_i2c_bus0_callback(false);
 /* End user code. Do not edit comment generated here */
 }
 
@@ -86,6 +87,7 @@ static void r_Config_IICA0_callback_master_receiveend(void)
 {
     SPT0 = 1U;
 /* Start user code for r_Config_IICA0_callback_master_receiveend. Do not edit comment generated here */
+    rm_comms_i2c_bus0_callback(false);
 /* End user code. Do not edit comment generated here */
 }
 
@@ -99,6 +101,7 @@ static void r_Config_IICA0_callback_master_receiveend(void)
 static void r_Config_IICA0_callback_master_error(MD_STATUS flag)
 {
     /* Start user code for r_Config_IICA0_callback_master_error. Do not edit comment generated here */
+	rm_comms_i2c_bus0_callback(true);
     /* End user code. Do not edit comment generated here */
 }
 
