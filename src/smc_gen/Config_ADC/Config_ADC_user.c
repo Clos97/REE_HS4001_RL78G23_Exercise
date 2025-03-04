@@ -30,7 +30,7 @@ Includes
 #include "r_cg_userdefine.h"
 #include "Config_ADC.h"
 /* Start user code for include. Do not edit comment generated here */
-bool g_interrupt_flag_ADC;
+bool 						g_interrupt_flag_ADC = false;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************

@@ -30,14 +30,35 @@
 #include "r_comms_i2c_if.h"
 #include "r_bsp_config.h"
 
+/* Define the States for the State Machine */
+typedef enum {
+    STATE_WAITING, // State when the Machine is in Idle and the Timer is Running
+	STATE_WAITING_FOR_HT_CALC,
+    STATE_READ_HT_SENSOR_START,
+	STATE_READ_HT_SENSOR_READ,
+	STATE_READ_HT_SENSOR_CALC,
+    STATE_READ_INTERNAL_TEMPERATURE,
+	STATE_STORE_VALUE,
+	STATE_PRINT_DATA,
+	STATE_COMPARE,
+	STATE_ENTERING_LPM,
+	STATE_ESCAPING_LPM,
+	STATE_ERROR
+} state_t;
+
+
 /* Define global variables */
 static rm_hs400x_raw_data_t             gs_hs400x_raw_data;
+static volatile rm_hs400x_data_t        gs_hs400x_data;
 static fsp_err_t						err;
-
+state_t									g_currentState = STATE_WAITING;
+extern bool								g_interrupt_flag_ADC;
+uint16_t								g_temperature_internal[1] = {0};
 
 int main (void);
 void g_comms_i2c_bus0_quick_setup(void);
 void g_hs400x_sensor0_quick_setup(void);
+void timer_callback(void);
 
 /* Quick setup for g_comms_i2c_bus0. */
 void g_comms_i2c_bus0_quick_setup(void)
@@ -50,16 +71,39 @@ void g_hs400x_sensor0_quick_setup(void)
 {
 	/* Open HS400X sensor instance, this must be done before calling any HS400X API */
 	err = RM_HS400X_Open(g_hs400x_sensor0.p_ctrl, g_hs400x_sensor0.p_cfg);
-	assert(err != FSP_SUCCESS);
+	if(err != FSP_SUCCESS)
+	{
+		g_currentState = STATE_ERROR;
+	}
 }
 
 /* Callback Functions*/
 void hs400x_user_i2c_callback0(rm_hs400x_callback_args_t * p_args)
 {
-    // Get the measurement Data
-	err = RM_HS400X_Read(g_hs400x_sensor0.p_ctrl, &gs_hs400x_raw_data);
-	assert(err != FSP_SUCCESS);
+	if (RM_HS400X_EVENT_SUCCESS == p_args->event)
+	    {
+			switch(g_currentState)
+			{
+			case STATE_WAITING:
+				g_currentState = STATE_READ_HT_SENSOR_READ;
+				break;
+			case STATE_WAITING_FOR_HT_CALC:
+				g_currentState = STATE_READ_HT_SENSOR_CALC;
+				break;
+			}
+	    }
+	    else
+	    {
+	    	g_currentState = STATE_ERROR;
+	    }
 }
+
+void timer_callback()
+{
+	g_currentState = STATE_READ_HT_SENSOR_START;
+	PIN_WRITE(LED1) = ~PIN_WRITE(LED1);
+}
+
 
 int main(void)
 {
@@ -70,14 +114,80 @@ int main(void)
 	/* Open HS400X */
 	g_hs400x_sensor0_quick_setup();
 
+	// Start the Timer
+	R_Config_TAU0_0_Start();
+
+	// Prepare the ADC for conversion
+	R_Config_ADC_Set_OperationOn();
 
 	// Main loop
 	while(1){
 
-		err = RM_HS400X_MeasurementStart(g_hs400x_sensor0.p_ctrl);
-		assert(err != FSP_SUCCESS);
+		switch(g_currentState)
+		{
+			case STATE_WAITING:
+				break;
+			case STATE_WAITING_FOR_HT_CALC:
+				break;
+			case STATE_READ_HT_SENSOR_START:
+				err = RM_HS400X_MeasurementStart(g_hs400x_sensor0.p_ctrl);
+				if(err == FSP_SUCCESS)
+				{
+					g_currentState = STATE_WAITING;
+				}else{
 
-		R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS);
+					g_currentState = STATE_ERROR;
+				}
+				break;
+			case STATE_READ_HT_SENSOR_READ:
+				err = RM_HS400X_Read(g_hs400x_sensor0.p_ctrl, &gs_hs400x_raw_data);
+				if(err == FSP_SUCCESS)
+				{
+					g_currentState = STATE_WAITING_FOR_HT_CALC;
+				}else{
+
+					g_currentState = STATE_ERROR;
+				}
+
+				break;
+			case STATE_READ_HT_SENSOR_CALC:
+				//err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
+				gs_hs400x_data;
+				if(err == FSP_SUCCESS)
+				{
+
+					g_currentState = STATE_READ_INTERNAL_TEMPERATURE;
+				}else{
+
+					g_currentState = STATE_ERROR;
+				}
+				break;
+
+			case STATE_READ_INTERNAL_TEMPERATURE:
+
+
+				g_interrupt_flag_ADC = false;
+				R_Config_ADC_Start();
+
+				// Wait for the interrupt of the ADC
+				while(!g_interrupt_flag_ADC);
+
+				// Read the ADC value
+				ADIF = 0U;						/* Clear INTAD request */
+				R_Config_ADC_Get_Result_12bit(g_temperature_internal);
+				R_Config_ADC_Stop ();
+
+				g_currentState = STATE_WAITING;
+				break;
+
+			case STATE_ERROR:
+				//R_Config_TAU0_0_Stop();
+				PIN_WRITE(LED2) = false; // Set LEDs High
+				break;
+			default:
+				g_currentState = STATE_ERROR;
+			break;
+		}
 
 	}
 
