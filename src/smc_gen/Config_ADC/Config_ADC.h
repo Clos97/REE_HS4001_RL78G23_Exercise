@@ -18,28 +18,19 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
-* Version          : 1.0.40
+* File Name        : Config_ADC.h
+* Component Version: 1.6.0
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : This file implements device driver for Config_ADC.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
-#include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Pin.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
-#include "r_cg_userdefine.h"
+#include "r_cg_ad.h"
 
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
+#ifndef CFG_Config_ADC_H
+#define CFG_Config_ADC_H
 
 /***********************************************************************************************************************
 Macro definitions (Register bit)
@@ -48,15 +39,43 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
+/* Upper bound (ADUL) value */
+#define _FF_AD_ADUL_VALUE               (0xFFU)
+/* Lower bound (ADLL) value */
+#define _00_AD_ADLL_VALUE               (0x00U)
+#define AD_WAITTIME_B                   (8U)    /* wait for 1us + 2fAD as default,
+                                                   please change the waiting time value according to the system */
 
 /***********************************************************************************************************************
 Typedef definitions
 ***********************************************************************************************************************/
+typedef enum
+{
+    ADCHANNEL0, ADCHANNEL1, ADCHANNEL2, ADCHANNEL3, ADCHANNEL4, ADCHANNEL5,
+    ADCHANNEL6, ADCHANNEL7, ADCHANNEL16 = 16U, ADCHANNEL17,
+    ADCHANNEL18, ADCHANNEL19, ADTSCAP = 30U, ADTEMPERSENSOR0 = 128U, ADINTERREFVOLT
+} e_ad_channel_t;
+typedef enum
+{
+    ADNORMALINPUT,
+    ADAVREFM = 2U,
+    ADAVREFP
+} e_test_channel_t;
 
 /***********************************************************************************************************************
 Global functions
 ***********************************************************************************************************************/
+void R_Config_ADC_Create(void);
+void R_Config_ADC_Start(void);
+void R_Config_ADC_Stop(void);
+void R_Config_ADC_Set_OperationOn(void);
+void R_Config_ADC_Set_OperationOff(void);
+void R_Config_ADC_Set_SnoozeOn(void);
+void R_Config_ADC_Set_SnoozeOff(void);
+void R_Config_ADC_Get_Result_12bit(uint16_t * const buffer);
+MD_STATUS R_Config_ADC_Set_ADChannel(e_ad_channel_t channel);
+MD_STATUS R_Config_ADC_Set_TestChannel(e_test_channel_t channel);
+void R_Config_ADC_Create_UserInit(void);
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #endif
-

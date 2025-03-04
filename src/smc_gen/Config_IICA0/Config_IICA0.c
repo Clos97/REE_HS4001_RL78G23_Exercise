@@ -129,38 +129,27 @@ MD_STATUS R_Config_IICA0_Master_Send(uint8_t adr, uint8_t * const tx_buf, uint16
 {
     MD_STATUS status = MD_OK;
 
-    IICAMK0 = 1U;    /* disable INTIICA0 interrupt */
+    STT0 = 1U;    /* send IICA0 start condition */
+    IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
 
-    if ((1U == IICBSY0) && (0U == MSTS0))
+    /* Wait */
+    while (0U == STD0)
     {
-        /* Check bus busy */
-        IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
-        status = MD_ERROR1;
+        if (0U == (wait--))
+        {
+            status = MD_ERROR2;
+            break;
+        }
     }
-    else
+
+    /* Detect start condition */
+    if (MD_OK == status)
     {
-        STT0 = 1U;    /* send IICA0 start condition */
-        IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
-
-        /* Wait */
-        while (0U == STD0)
-        {
-            if (0U == (wait--))
-            {
-                status = MD_ERROR2;
-                break;
-            }
-        }
-
-        /* Detect start condition */
-        if (MD_OK == status)
-        {
-            g_iica0_tx_cnt = tx_num;
-            gp_iica0_tx_address = tx_buf;
-            g_iica0_master_status_flag = _00_IICA_MASTER_FLAG_CLEAR;
-            adr &= (uint8_t)~0x01U;    /* set send mode */
-            IICA0 = adr;    /* send address */
-        }
+        g_iica0_tx_cnt = tx_num;
+        gp_iica0_tx_address = tx_buf;
+        g_iica0_master_status_flag = _00_IICA_MASTER_FLAG_CLEAR;
+        adr &= (uint8_t)~0x01U;    /* set send mode */
+        IICA0 = adr;    /* send address */
     }
 
     return (status);
@@ -184,40 +173,28 @@ MD_STATUS R_Config_IICA0_Master_Receive(uint8_t adr, uint8_t * const rx_buf, uin
 {
     MD_STATUS status = MD_OK;
 
-    IICAMK0 = 1U;    /* disable INTIICA0 interrupt */
+    STT0 = 1U;    /* send IICA0 start condition */
+    IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
 
-    if ((1U == IICBSY0) && (0U == MSTS0))
+    /* Wait */
+    while (0U == STD0)
     {
-        /* Check bus busy */
-        IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
-        status = MD_ERROR1;
+        if (0U == (wait--))
+        {
+            status = MD_ERROR2;
+            break;
+        }
     }
-    else
-    {
-        STT0 = 1U;    /* send IICA0 start condition */
-        IICAMK0 = 0U;    /* enable INTIICA0 interrupt */
-        
-        /* Wait */
-        while (0U == STD0)
-        {
-            if (0U == (wait--))
-            {
-                status = MD_ERROR2;
-                break;
-            }
-        }
 
-        /* Detect start condition */
-        if (MD_OK == status)
-        {
-            /* Set parameter */
-            g_iica0_rx_len = rx_num;
-            g_iica0_rx_cnt = 0U;
-            gp_iica0_rx_address = rx_buf;
-            g_iica0_master_status_flag = _00_IICA_MASTER_FLAG_CLEAR;
-            adr |= 0x01U;    /* set receive mode */
-            IICA0 = adr;    /* receive address */
-        }
+    if (MD_OK == status)
+    {
+        /* Set parameter */
+        g_iica0_rx_len = rx_num;
+        g_iica0_rx_cnt = 0U;
+        gp_iica0_rx_address = rx_buf;
+        g_iica0_master_status_flag = _00_IICA_MASTER_FLAG_CLEAR;
+        adr |= 0x01U;    /* set receive mode */
+        IICA0 = adr;    /* receive address */
     }
 
     return (status);

@@ -18,45 +18,75 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
+* File Name        : r_cg_ad_common.c
 * Version          : 1.0.40
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : None
 ***********************************************************************************************************************/
-
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Pin.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
 #include "r_cg_userdefine.h"
-
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
-
-/***********************************************************************************************************************
-Macro definitions (Register bit)
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Macro definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Typedef definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Global functions
-***********************************************************************************************************************/
-/* Start user code for function. Do not edit comment generated here */
+#include "r_cg_ad_common.h"
+/* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
-#endif
 
+/***********************************************************************************************************************
+Pragma directive
+***********************************************************************************************************************/
+/* Start user code for pragma. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+Global variables and functions
+***********************************************************************************************************************/
+/* Start user code for global. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+* Function Name: R_ADC_Set_PowerOn
+* Description  : This function starts the clock supply for AD converter.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_ADC_Set_PowerOn(void)
+{
+    ADCEN = 1U;    /* start AD clock */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_ADC_Set_PowerOff
+* Description  : This function stops the clock supply for AD converter.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_ADC_Set_PowerOff(void)
+{
+    ADCEN = 0U;    /* stop AD clock */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_ADC_Set_Reset
+* Description  : This function sets AD converter module in reset state.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_ADC_Set_Reset(void)
+{
+    ADCRES = 1U;    /* reset AD converter */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_ADC_Release_Reset
+* Description  : This function releases AD converter module from reset state.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_ADC_Release_Reset(void)
+{
+    ADCRES = 0U;    /* release AD converter */
+}
+
+/* Start user code for adding. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
