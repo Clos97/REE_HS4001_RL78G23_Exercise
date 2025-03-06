@@ -880,7 +880,7 @@
  0 : Access to the data flash memory area and extra area is disabled.
  1 : Access to the data flash memory area and extra area is enabled.
 */
-#define BSP_CFG_DATA_FLASH_ACCESS_ENABLE (0)
+#define BSP_CFG_DATA_FLASH_ACCESS_ENABLE (1)
 
 /*************************************************
  * Definition for switching functions
