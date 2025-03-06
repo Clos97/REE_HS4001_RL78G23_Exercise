@@ -178,13 +178,8 @@ int main(void)
 			case STATE_READ_HT_SENSOR_CALC:
 				//err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
 				gs_hs400x_data;
-				if(err == FSP_SUCCESS)
-				{
-					g_currentState = STATE_READ_INTERNAL_TEMPERATURE;
-				}else{
 
-					g_currentState = STATE_ERROR;
-				}
+				g_currentState = (err == FSP_SUCCESS) ? STATE_READ_INTERNAL_TEMPERATURE : STATE_ERROR;
 				break;
 
 			case STATE_READ_INTERNAL_TEMPERATURE:
@@ -201,7 +196,8 @@ int main(void)
 				R_Config_ADC_Get_Result_12bit(g_temperature_internal);
 				R_Config_ADC_Stop ();
 
-				g_currentState = STATE_STORE_VALUE;
+				//TODO: Change to STORE DATA
+				g_currentState = STATE_PRINT_DATA;
 				break;
 			case STATE_STORE_VALUE:
 				// Store the Data in the Data Flash
@@ -262,6 +258,10 @@ int main(void)
 				//P5_bit.no3 = 0;
 				g_dataFlash_blockNumber++;
 				if(g_dataFlash_blockNumber > 9) g_dataFlash_blockNumber = 0;
+				break;
+			case STATE_PRINT_DATA:
+				// Print Sensor Data to terminal
+
 				break;
 			case STATE_ERROR:
 				//R_Config_TAU0_0_Stop();
