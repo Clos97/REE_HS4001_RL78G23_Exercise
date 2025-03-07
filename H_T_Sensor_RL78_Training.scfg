@@ -60,7 +60,7 @@
             <item id="check"/>
             <item id="uncheck"/>
         </option>
-        <option enabled="false" id="msocofrequency" selection="frq4">
+        <option enabled="false" id="msocofrequency" selection="frq1">
             <item id="frq4"/>
             <item id="frq2"/>
             <item id="frq1"/>
@@ -95,7 +95,7 @@
         </option>
         <option enabled="true" id="focoswitcher" selection="hococlock_focoswitcher">
             <item id="hococlock_focoswitcher" input="" value="32"/>
-            <item id="mococlock_focoswitcher" input="" value="4"/>
+            <item id="mococlock_focoswitcher" input="" value="1"/>
         </option>
         <option enabled="true" id="fmainswitcher" selection="focoswitcher_fmainswitcher">
             <item id="focoswitcher_fmainswitcher" input="" value="32"/>
@@ -108,7 +108,7 @@
             <item id="textoutputitem" input="" value="32"/>
         </option>
         <option enabled="false" id="fimp" selection="textoutputitem">
-            <item id="textoutputitem" input="" value="4"/>
+            <item id="textoutputitem" input="" value="1"/>
         </option>
         <option enabled="false" id="fmxp" selection="textoutputitem">
             <item id="textoutputitem" input="" value="5"/>
@@ -228,15 +228,16 @@
         <Item bank="0" id="UARTA_INTUR1" priority="3"/>
     </tool>
     <tool id="Pins" version="1.0.1.0">
-        <pinItem allocation="5" comments="" direction="None" id="TOOL0" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
-        <pinItem allocation="44" comments="" direction="None" id="TOOLTxD" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="18" comments="" direction="None" id="SDAA0" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="8" comments="" direction="None" id="XT1" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="7" comments="" direction="None" id="XT2" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
-        <pinItem allocation="17" comments="" direction="None" id="SCLA0" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="45" comments="" direction="None" id="TOOLRxD" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
+        <pinItem allocation="3" comments="" direction="None" id="TxDA1" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="35" comments="" direction="O" id="P52" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinItem allocation="36" comments="" direction="O" id="P53" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
+        <pinItem allocation="5" comments="" direction="None" id="TOOL0" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
+        <pinItem allocation="44" comments="" direction="None" id="TOOLTxD" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
+        <pinItem allocation="17" comments="" direction="None" id="SCLA0" isUsedBySoftware="true" locked="false" operationMode="" status="0"/>
         <pinnumItem comment="J7-39[TOOLTxD]" id="44" symbolicname=""/>
         <pinnumItem comment="J7-40[TOOLRxD]" id="45" symbolicname=""/>
         <pinnumItem comment="J7-41" id="46" symbolicname=""/>
@@ -959,6 +960,103 @@
             <component description="Dependency : r_bsp version(s) 1.62&#10;The common API functions of Renesas Flash Driver RL78 Type 01 are called from the user program to reprogram the code flash memory or data flash memory or extra area in the RL78/G2x." detailDescription="Flash Driver[Renesas Flash Driver RL78 Type01 Flash Common]" display="r_rfd_rl78_t01_common" id="r_rfd_rl78_t01_common1.20" version="1.20"/>
             <source description="Components supporting Software integration" display="Generic SW" id="com.renesas.smc.tools.swcomponent.generic.source"/>
             <source description="Components supporting Software integration" display="Generic SW" id="com.renesas.smc.tools.swcomponent.generic.source"/>
+        </configuration>
+        <configuration apiMode="FULL_API" id="3161bfda-44f7-4730-9c8c-e1b1a0057581" inuse="true" name="Config_UARTA1">
+            <allocatable id="UARTA1">
+                <isocket id="vddRangeMode" selection="Clock.tool_clock_vddRangeMode" value="hsmainmode"/>
+                <isocket id="fsxl" selection="Clock.tool_clock_fSXL" value="32768.0"/>
+                <isocket id="evddRange" selection="Clock.tool_clock_evddRange" value="4.0~5.5"/>
+                <isocket id="fCLK" selection="Clock.tool_clock_fCLK" value="3.2E7"/>
+                <isocket id="fihp" selection="Clock.tool_clock_fIHP" value="3.2E7"/>
+                <isocket id="fCLK_MAX" selection="Clock.tool_clock_fCLK_MAX" value="3.2E7"/>
+                <isocket id="fimp" selection="Clock.tool_clock_fIMP" value="0.0"/>
+                <isocket id="fmxp" selection="Clock.tool_clock_fMXP" value="0.0"/>
+                <option enabled="true" id="Mode" selection="transmit">
+                    <item id="transmit" input="" vlaue="0"/>
+                    <item id="receive" input="" vlaue="0"/>
+                    <item id="both" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="Operation" selection="fsel3">
+                    <item id="fsel0" input="1" vlaue="0"/>
+                    <item id="fsel1" input="2" vlaue="0"/>
+                    <item id="fsel2" input="4" vlaue="0"/>
+                    <item id="fsel3" input="8" vlaue="0"/>
+                    <item id="fsel4" input="16" vlaue="0"/>
+                    <item id="fsel5" input="32" vlaue="0"/>
+                    <item id="fsel6" input="64" vlaue="0"/>
+                    <item id="fsel7" input="fsxl" vlaue="0"/>
+                    <item id="fsel8" input="elcl" vlaue="0"/>
+                </option>
+                <option enabled="true" id="clockSource" selection="fihp">
+                    <item id="fmxp" input="" vlaue="0"/>
+                    <item id="fihp" input="" vlaue="0"/>
+                    <item id="fimp" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="elcClockValue" selection="input">
+                    <item id="input" input="32000" vlaue="0"/>
+                </option>
+                <option enabled="true" id="CLKAoutput" selection="disable">
+                    <item id="disable" input="" vlaue="0"/>
+                    <item id="enable" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="dataLength" selection="8bits">
+                    <item id="5bits" input="" vlaue="0"/>
+                    <item id="7bits" input="" vlaue="0"/>
+                    <item id="8bits" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="directionSetting" selection="lsb">
+                    <item id="lsb" input="" vlaue="0"/>
+                    <item id="msb" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="paritySetting" selection="none">
+                    <item id="none" input="" vlaue="0"/>
+                    <item id="zero" input="" vlaue="0"/>
+                    <item id="odd" input="" vlaue="0"/>
+                    <item id="even" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="stopBitSetting" selection="1bit">
+                    <item id="1bit" input="" vlaue="0"/>
+                    <item id="2bits" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="dataLevelSetting" selection="normal">
+                    <item id="normal" input="" vlaue="0"/>
+                    <item id="reverse" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="transmitMode" selection="poll">
+                    <item id="poll" input="" vlaue="0"/>
+                    <item id="interrupt" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="baudrateSetting" selection="input">
+                    <item id="input" input="9600" vlaue="208"/>
+                    <item id="9600" input="9600" vlaue="0"/>
+                    <item id="19200" input="19200" vlaue="0"/>
+                    <item id="38400" input="38400" vlaue="0"/>
+                    <item id="76800" input="76800" vlaue="0"/>
+                    <item id="115200" input="115200" vlaue="0"/>
+                    <item id="153600" input="153600" vlaue="0"/>
+                </option>
+                <option enabled="false" id="txPriority" selection="Level3">
+                    <item id="Level0" input="" vlaue="0"/>
+                    <item id="Level1" input="" vlaue="0"/>
+                    <item id="Level2" input="" vlaue="0"/>
+                    <item id="Level3" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="txCallback" selection="enable">
+                    <item id="enable" input="" vlaue="0"/>
+                    <item id="disable" input="" vlaue="0"/>
+                </option>
+            </allocatable>
+            <component description="The universal asynchronous receiver/transmitter(UART) interface supports serial communication." detailDescription="" display="UART Communication" id="com.renesas.smc.tools.swcomponent.codegenerator.rl78.uart" version="1.7.0"/>
+            <allocator channelLevel0="1" channelLevel1="" channelLevel2="" channelLevel3="" channelLevel4="" channelLevel5="" description="UART Communication" display="UARTA1" id="com.renesas.smc.tools.swcomponent.codegenerator.rl78.uart.allocator02" type="UARTA">
+                <context>
+                    <option enabled="true" id="Mode" selection="transmit">
+                        <item enabled="true" id="transmit"/>
+                        <item enabled="true" id="receive"/>
+                        <item enabled="true" id="both"/>
+                    </option>
+                </context>
+            </allocator>
+            <source description="Code generator components provide peripheral drivers with customized generated source geared towards small code size" display="Code Generator" id="com.renesas.smc.tools.swcomponent.codegenerator.source"/>
         </configuration>
     </tool>
     <tool id="System">

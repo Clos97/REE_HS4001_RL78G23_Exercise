@@ -60,6 +60,7 @@ static volatile rm_hs400x_data_t        gs_hs400x_data;
 static fsp_err_t						err;
 state_t									g_currentState = STATE_WAITING;
 extern bool								g_interrupt_flag_ADC;
+extern bool								g_interrupt_flag_UART;
 uint16_t								g_temperature_internal[1] = {0};
 uint8_t									g_dataFlash_blockNumber = 0;
 
@@ -144,7 +145,12 @@ int main(void)
 	if (R_RFD_ENUM_RET_STS_OK != l_e_rfd_status_flag)
 			g_currentState = STATE_ERROR;
 
+	// Config UART
+	R_Config_UARTA1_Create();
+
+
 	//=======================================
+	MD_STATUS g_uarta1_tx_end = 0U;     /* uartA0 transmission end */
 	// Main loop
 	while(1){
 
@@ -261,7 +267,16 @@ int main(void)
 				break;
 			case STATE_PRINT_DATA:
 				// Print Sensor Data to terminal
+				R_Config_UARTA1_Start();
+				uint8_t tx_buf1[] = {0x3B};
 
+				g_uarta1_tx_end = R_Config_UARTA1_Send(tx_buf1, sizeof(tx_buf1));
+
+				// blocking: wait until transmitting done
+				while(!g_interrupt_flag_UART);
+
+				R_Config_UARTA1_Stop();
+				g_interrupt_flag_UART = false; // reset the flag
 				break;
 			case STATE_ERROR:
 				//R_Config_TAU0_0_Stop();

@@ -18,30 +18,19 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
-* Version          : 1.0.40
+* File Name        : Config_UARTA1.h
+* Component Version: 1.7.0
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : This file implements device driver for Config_UARTA1.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
-#include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Config_UARTA1.h"
-#include "Pin.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
-#include "r_cg_userdefine.h"
+#include "r_cg_uarta.h"
 
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
+#ifndef CFG_Config_UARTA1_H
+#define CFG_Config_UARTA1_H
 
 /***********************************************************************************************************************
 Macro definitions (Register bit)
@@ -50,6 +39,9 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
+#define _D0_UARTA_OUTPUT_BAUDRATE             (0xD0U)
+#define UARTA1_WAIT_1_CLOCK_CYCLE             (1U)    /* wait for 1 cycle as default,
+                                                         please change the waiting time value according to the system */
 
 /***********************************************************************************************************************
 Typedef definitions
@@ -58,7 +50,14 @@ Typedef definitions
 /***********************************************************************************************************************
 Global functions
 ***********************************************************************************************************************/
+void R_Config_UARTA1_Create(void);
+void R_Config_UARTA1_Start(void);
+void R_Config_UARTA1_Stop(void);
+MD_STATUS R_Config_UARTA1_Send(uint8_t * const tx_buf, uint16_t tx_num);
+void R_Config_UARTA1_Loopback_Enable(void);
+void R_Config_UARTA1_Loopback_Disable(void);
+void R_Config_UARTA1_PollingEnd_UserCode(void);
+void R_Config_UARTA1_Create_UserInit(void);
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #endif
-

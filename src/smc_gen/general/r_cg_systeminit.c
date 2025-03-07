@@ -31,6 +31,7 @@ Includes
 #include "Config_IICA0.h"
 #include "Config_PORT.h"
 #include "Config_ADC.h"
+#include "r_cg_uarta_common.h"
 #include "r_cg_tau_common.h"
 /* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
@@ -62,6 +63,7 @@ void R_Systeminit(void)
     /* Set peripheral settings */
     R_Config_PORT_Create();
     R_TAU0_Create();
+    R_UARTA_Create();
     R_Config_IICA0_Create();
     R_Config_ADC_Create();
 }

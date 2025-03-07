@@ -18,30 +18,14 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
+* File Name        : r_cg_uarta_common.h
 * Version          : 1.0.40
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : General header file for UARTA common peripheral.
 ***********************************************************************************************************************/
 
-/***********************************************************************************************************************
-Includes
-***********************************************************************************************************************/
-#include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Config_UARTA1.h"
-#include "Pin.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
-#include "r_cg_userdefine.h"
-
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
+#ifndef UARTA_COMMON_H
+#define UARTA_COMMON_H
 
 /***********************************************************************************************************************
 Macro definitions (Register bit)
@@ -58,7 +42,9 @@ Typedef definitions
 /***********************************************************************************************************************
 Global functions
 ***********************************************************************************************************************/
+void R_UARTA_Create(void);
+void R_UARTA_Set_PowerOn(void);
+void R_UARTA_Set_PowerOff(void);
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #endif
-

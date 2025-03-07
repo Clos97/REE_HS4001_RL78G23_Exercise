@@ -18,47 +18,68 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
+* File Name        : r_cg_uarta_common.c
 * Version          : 1.0.40
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : None
 ***********************************************************************************************************************/
-
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Config_UARTA1.h"
-#include "Pin.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
 #include "r_cg_userdefine.h"
-
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
-
-/***********************************************************************************************************************
-Macro definitions (Register bit)
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Macro definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Typedef definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Global functions
-***********************************************************************************************************************/
-/* Start user code for function. Do not edit comment generated here */
+#include "Config_UARTA1.h"
+#include "r_cg_uarta_common.h"
+/* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
-#endif
+
+/***********************************************************************************************************************
+Pragma directive
+***********************************************************************************************************************/
+/* Start user code for pragma. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+Global variables and functions
+***********************************************************************************************************************/
+/* Start user code for global. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+* Function Name: R_UARTA_Create
+* Description  : This function enables UARTA0/UARTA1 input clock supply and initializes UARTA0/UARTA1 module.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_UARTA_Create(void)
+{
+    UTAEN = 1U;    /* supply UARTA0/UARTA1 clock */
+    /* Set UARTA0/UARTA1 settings */
+    R_Config_UARTA1_Create();
+}
+
+/***********************************************************************************************************************
+* Function Name: R_UARTA_Set_PowerOn
+* Description  : This function starts the clock supply for UARTA0/UARTA1.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_UARTA_Set_PowerOn(void)
+{
+    UTAEN = 1U;    /* supply UARTA0,UARTA1 clock */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_UARTA_Set_PowerOff
+* Description  : This function stops the clock supply for UARTA0/UARTA1.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_UARTA_Set_PowerOff(void)
+{
+    UTAEN = 0U;    /* stop UARTA0,UARTA1 clock */
+}
+
+/* Start user code for adding. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
 

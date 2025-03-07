@@ -18,47 +18,57 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
-* Version          : 1.0.40
+* File Name        : Config_UARTA1_user.c
+* Component Version: 1.7.0
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : This file implements device driver for Config_UARTA1.
 ***********************************************************************************************************************/
-
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_TAU0_0.h"
-#include "Config_UARTA1.h"
-#include "Pin.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
 #include "r_cg_userdefine.h"
-
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
-
-/***********************************************************************************************************************
-Macro definitions (Register bit)
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Macro definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Typedef definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Global functions
-***********************************************************************************************************************/
-/* Start user code for function. Do not edit comment generated here */
+#include "Config_UARTA1.h"
+/* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
-#endif
 
+/***********************************************************************************************************************
+Pragma directive
+***********************************************************************************************************************/
+/* Start user code for pragma. Do not edit comment generated here */
+bool		g_interrupt_flag_UART = false;
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+Global variables and functions
+***********************************************************************************************************************/
+/* Start user code for global. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+
+/***********************************************************************************************************************
+* Function Name: R_Config_UARTA1_Create_UserInit
+* Description  : This function adds user code after initializing UARTA1.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_Config_UARTA1_Create_UserInit(void)
+{
+    /* Start user code for user init. Do not edit comment generated here */
+    /* End user code. Do not edit comment generated here */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_Config_UARTA1_PollingEnd_UserCode
+* Description  : This function is a callback function when UARTA1 finishes polling transmission.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_Config_UARTA1_PollingEnd_UserCode(void)
+{
+    /* Start user code for R_Config_UARTA1_PollingEnd_UserCode. Do not edit comment generated here */
+	g_interrupt_flag_UART = true;
+    /* End user code. Do not edit comment generated here */
+}
+
+/* Start user code for adding. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */

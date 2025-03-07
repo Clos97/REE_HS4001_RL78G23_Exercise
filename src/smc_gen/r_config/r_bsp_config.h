@@ -1151,7 +1151,7 @@
  2                : 1MHz
  Other than above : Setting prohibited
 */
-#define BSP_CFG_MOCO_DIVIDE (0) /* Generated value. Do not edit this manually */
+#define BSP_CFG_MOCO_DIVIDE (2) /* Generated value. Do not edit this manually */
 
 /* Operation setting at initial setting */
 /* Starts the high-speed on-chip oscillator at initialization

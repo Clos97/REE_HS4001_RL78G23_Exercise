@@ -51,6 +51,10 @@ Global variables and functions
 ***********************************************************************************************************************/
 void R_Pins_Create(void)
 {
+    /* Set TxDA1 pin */
+    P4 |= 0x04U;
+    PM4 &= 0xFBU;
+
     /* Set XT1 pin */
     /* No register setting has been required for pin */
 
