@@ -183,6 +183,7 @@ int main(void)
 				break;
 			case STATE_READ_HT_SENSOR_CALC:
 				//err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
+				//TODO: Hier muss der Sensor eingebunden werden
 				gs_hs400x_data;
 
 				g_currentState = (err == FSP_SUCCESS) ? STATE_READ_INTERNAL_TEMPERATURE : STATE_ERROR;
@@ -268,7 +269,11 @@ int main(void)
 			case STATE_PRINT_DATA:
 				// Print Sensor Data to terminal
 				R_Config_UARTA1_Start();
-				uint8_t tx_buf1[] = {0x3B};
+
+				uint8_t tx_buf1[WRITE_BUFFER_SIZE] = {
+					(uint8_t)((g_temperature_internal[0] >> 8) & 0xFF), // High-Byte
+					(uint8_t)(g_temperature_internal[0] & 0xFF)       // Low-Byte
+				};
 
 				g_uarta1_tx_end = R_Config_UARTA1_Send(tx_buf1, sizeof(tx_buf1));
 
@@ -277,6 +282,8 @@ int main(void)
 
 				R_Config_UARTA1_Stop();
 				g_interrupt_flag_UART = false; // reset the flag
+
+				g_currentState = STATE_WAITING;
 				break;
 			case STATE_ERROR:
 				//R_Config_TAU0_0_Stop();
