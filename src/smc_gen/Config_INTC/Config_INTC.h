@@ -18,56 +18,39 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_cg_systeminit.c
-* Version          : 1.0.40
+* File Name        : Config_INTC.h
+* Component Version: 1.5.0
 * Device(s)        : R7F100GLGxFB
-* Description      : This file implements system initializing function.
+* Description      : This file implements device driver for Config_INTC.
 ***********************************************************************************************************************/
+
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
-#include "r_cg_macrodriver.h"
-#include "r_cg_userdefine.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_RTC.h"
-#include "Config_INTC.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-/* Start user code for include. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */
+#include "r_cg_intc.h"
+
+#ifndef CFG_Config_INTC_H
+#define CFG_Config_INTC_H
 
 /***********************************************************************************************************************
-Pragma directive
+Macro definitions (Register bit)
 ***********************************************************************************************************************/
-/* Start user code for pragma. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
-Global variables and functions
+Macro definitions
 ***********************************************************************************************************************/
-/* Start user code for global. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
-* Function Name: R_Systeminit
-* Description  : This function initializes every macro
-* Arguments    : None
-* Return Value : None
+Typedef definitions
 ***********************************************************************************************************************/
-void R_Systeminit(void)
-{
-    PRR0 = 0x7FU;    /* reset IICA, ADC, TAU and SAU module */
-    PRR1 = 0xF3U;    /* reset DAC, SMS, COMP, ITL, REMC, CTSU module */
-    PRR0 = 0x00U;    /* release IICA, ADC, TAU and SAU module */
-    PRR1 = 0x00U;    /* release DAC, SMS, COMP, ITL, REMC, CTSU module */
-    /* Set peripheral settings */
-    R_Config_PORT_Create();
-    R_TAU0_Create();
-    R_UARTA_Create();
-    R_Config_IICA0_Create();
-    R_Config_ADC_Create();
-    R_Config_RTC_Create();
-    R_Config_INTC_Create();
-}
+
+/***********************************************************************************************************************
+Global functions
+***********************************************************************************************************************/
+void R_Config_INTC_Create(void);
+void R_Config_INTC_INTP0_Start(void);
+void R_Config_INTC_INTP0_Stop(void);
+void R_Config_INTC_Create_UserInit(void);
+/* Start user code for function. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
+#endif

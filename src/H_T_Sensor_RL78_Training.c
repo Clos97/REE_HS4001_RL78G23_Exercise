@@ -70,6 +70,7 @@ int main (void);
 void g_comms_i2c_bus0_quick_setup(void);
 void g_hs400x_sensor0_quick_setup(void);
 void timer_callback(void);
+void external_button_callback();
 uint8_t bcd_to_decimal(uint8_t bcd);
 
 /* Quick setup for g_comms_i2c_bus0. */
@@ -116,6 +117,10 @@ void timer_callback()
 	PIN_WRITE(LED1) = ~PIN_WRITE(LED1);
 }
 
+void external_button_callback()
+{
+	g_currentState = (g_currentState == STATE_ENTERING_LPM) ? STATE_ESCAPING_LPM : STATE_ENTERING_LPM;
+}
 
 int main(void)
 {
@@ -154,6 +159,10 @@ int main(void)
 	// Configure the RTC
 	R_Config_RTC_Create();
 	R_Config_RTC_Start();
+
+	// Configure the external Interrupt
+	R_Config_INTC_Create();
+	R_Config_INTC_INTP0_Start();
 
 
 	//=======================================
@@ -306,9 +315,19 @@ int main(void)
 				g_currentState = STATE_WAITING;
 				break;
 
+			case STATE_ENTERING_LPM:
+				// Stop the timer in order to enter LPM
+				R_Config_TAU0_0_Stop();
+
+				break;
+			case STATE_ESCAPING_LPM:
+				// Start the timer Again and continue with the normal work
+				R_Config_TAU0_0_Start();
+				g_currentState = STATE_WAITING;
+				break;
 
 			case STATE_ERROR:
-				//R_Config_TAU0_0_Stop();
+
 				PIN_WRITE(LED2) = false; // Set LEDs High
 				break;
 			default:

@@ -18,29 +18,24 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_cg_systeminit.c
-* Version          : 1.0.40
+* File Name        : Config_INTC_user.c
+* Component Version: 1.5.0
 * Device(s)        : R7F100GLGxFB
-* Description      : This file implements system initializing function.
+* Description      : This file implements device driver for Config_INTC.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_userdefine.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_RTC.h"
 #include "Config_INTC.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
 /* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
 Pragma directive
 ***********************************************************************************************************************/
+#pragma interrupt r_Config_INTC_intp0_interrupt(vect=INTP0)
 /* Start user code for pragma. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
@@ -51,23 +46,29 @@ Global variables and functions
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
-* Function Name: R_Systeminit
-* Description  : This function initializes every macro
+* Function Name: R_Config_INTC_Create_UserInit
+* Description  : This function adds user code after initializing the INTC module.
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void R_Systeminit(void)
+void R_Config_INTC_Create_UserInit(void)
 {
-    PRR0 = 0x7FU;    /* reset IICA, ADC, TAU and SAU module */
-    PRR1 = 0xF3U;    /* reset DAC, SMS, COMP, ITL, REMC, CTSU module */
-    PRR0 = 0x00U;    /* release IICA, ADC, TAU and SAU module */
-    PRR1 = 0x00U;    /* release DAC, SMS, COMP, ITL, REMC, CTSU module */
-    /* Set peripheral settings */
-    R_Config_PORT_Create();
-    R_TAU0_Create();
-    R_UARTA_Create();
-    R_Config_IICA0_Create();
-    R_Config_ADC_Create();
-    R_Config_RTC_Create();
-    R_Config_INTC_Create();
+    /* Start user code for user init. Do not edit comment generated here */
+    /* End user code. Do not edit comment generated here */
 }
+
+/***********************************************************************************************************************
+* Function Name: r_Config_INTC_intp0_interrupt
+* Description  : This function is INTP0 interrupt service routine
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+static void __near r_Config_INTC_intp0_interrupt(void)
+{
+    /* Start user code for r_Config_INTC_intp0_interrupt. Do not edit comment generated here */
+	external_button_callback();
+	/* End user code. Do not edit comment generated here */
+}
+
+/* Start user code for adding. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */

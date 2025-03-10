@@ -32,6 +32,7 @@ Includes
 #include "Config_PORT.h"
 #include "Config_ADC.h"
 #include "Config_RTC.h"
+#include "Config_INTC.h"
 #include "Config_TAU0_0.h"
 #include "Config_UARTA1.h"
 #include "Pin.h"

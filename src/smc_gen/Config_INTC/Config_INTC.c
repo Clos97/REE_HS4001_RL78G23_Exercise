@@ -18,23 +18,17 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_cg_systeminit.c
-* Version          : 1.0.40
+* File Name        : Config_INTC.c
+* Component Version: 1.5.0
 * Device(s)        : R7F100GLGxFB
-* Description      : This file implements system initializing function.
+* Description      : This file implements device driver for Config_INTC.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 #include "r_cg_userdefine.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_RTC.h"
 #include "Config_INTC.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
 /* Start user code for include. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 
@@ -51,23 +45,47 @@ Global variables and functions
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
-* Function Name: R_Systeminit
-* Description  : This function initializes every macro
+* Function Name: R_Config_INTC_Create
+* Description  : This function initializes the INTC module.
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-void R_Systeminit(void)
+void R_Config_INTC_Create(void)
 {
-    PRR0 = 0x7FU;    /* reset IICA, ADC, TAU and SAU module */
-    PRR1 = 0xF3U;    /* reset DAC, SMS, COMP, ITL, REMC, CTSU module */
-    PRR0 = 0x00U;    /* release IICA, ADC, TAU and SAU module */
-    PRR1 = 0x00U;    /* release DAC, SMS, COMP, ITL, REMC, CTSU module */
-    /* Set peripheral settings */
-    R_Config_PORT_Create();
-    R_TAU0_Create();
-    R_UARTA_Create();
-    R_Config_IICA0_Create();
-    R_Config_ADC_Create();
-    R_Config_RTC_Create();
-    R_Config_INTC_Create();
+    PMK0 = 1U;    /* disable INTP0 operation */
+    PIF0 = 0U;    /* clear INTP0 interrupt flag */
+    /* Set INTP0 level 2 priority */
+    PPR10 = 1U;
+    PPR00 = 0U;
+    EGN0 = _01_INTP0_EDGE_FALLING_SEL;
+    EGP0 = _00_INTP0_EDGE_RISING_UNSEL;
+
+    R_Config_INTC_Create_UserInit();
 }
+
+/***********************************************************************************************************************
+* Function Name: R_Config_INTC_INTP0_Start
+* Description  : This function clears INTP0 interrupt flag and enables interrupt.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_Config_INTC_INTP0_Start(void)
+{
+    PIF0 = 0U;    /* clear INTP0 interrupt flag */
+    PMK0 = 0U;    /* enable INTP0 interrupt */
+}
+
+/***********************************************************************************************************************
+* Function Name: R_Config_INTC_INTP0_Stop
+* Description  : This function disables INTP0 interrupt and clears interrupt flag.
+* Arguments    : None
+* Return Value : None
+***********************************************************************************************************************/
+void R_Config_INTC_INTP0_Stop(void)
+{
+    PMK0 = 1U;    /* disable INTP0 interrupt */
+    PIF0 = 0U;    /* clear INTP0 interrupt flag */
+}
+
+/* Start user code for adding. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */
