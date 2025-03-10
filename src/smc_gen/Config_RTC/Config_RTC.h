@@ -18,32 +18,19 @@
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* File Name        : r_smc_entry.h
-* Version          : 1.0.40
+* File Name        : Config_RTC.h
+* Component Version: 1.5.0
 * Device(s)        : R7F100GLGxFB
-* Description      : SMC platform header file..
+* Description      : This file implements device driver for Config_RTC.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 Includes
 ***********************************************************************************************************************/
-#include "r_cg_macrodriver.h"
-#include "Config_IICA0.h"
-#include "Config_PORT.h"
-#include "Config_ADC.h"
-#include "Config_RTC.h"
-#include "Config_TAU0_0.h"
-#include "Config_UARTA1.h"
-#include "Pin.h"
-#include "r_cg_uarta_common.h"
-#include "r_cg_tau_common.h"
-#include "r_cg_iica_common.h"
-#include "r_cg_ad_common.h"
-#include "r_cg_rtc_common.h"
-#include "r_cg_userdefine.h"
+#include "r_cg_rtc.h"
 
-#ifndef SMC_ENTRY_H
-#define SMC_ENTRY_H
+#ifndef CFG_Config_RTC_H
+#define CFG_Config_RTC_H
 
 /***********************************************************************************************************************
 Macro definitions (Register bit)
@@ -52,15 +39,59 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
+#define _00_RTC_COUNTER_SEC                  (0x00U)
+#define _00_RTC_COUNTER_MIN                  (0x00U)
+#define _12_RTC_COUNTER_HOUR                 (0x12U)
+#define _05_RTC_COUNTER_WEEK                 (0x05U)
+#define _07_RTC_COUNTER_DAY                  (0x07U)
+#define _03_RTC_COUNTER_MONTH                (0x03U)
+#define _25_RTC_COUNTER_YEAR                 (0x25U)
+#define RTC_WAITTIME_2CYCLE                  (163U)    /* wait for 2 cycles of the operating clock */
 
 /***********************************************************************************************************************
 Typedef definitions
 ***********************************************************************************************************************/
+typedef struct
+{
+    uint8_t sec;
+    uint8_t min;
+    uint8_t hour;
+    uint8_t day;
+    uint8_t week;
+    uint8_t month;
+    uint8_t year;
+} st_rtc_counter_value_t;
+typedef struct
+{
+    uint8_t alarmwm;
+    uint8_t alarmwh;
+    uint8_t alarmww;
+} st_rtc_alarm_value_t;
+typedef enum
+{
+    HOUR12,
+    HOUR24
+} e_rtc_hour_system_t;
+typedef enum
+{
+    HALFSEC = 1U,
+    ONESEC,
+    ONEMIN,
+    ONEHOUR,
+    ONEDAY,
+    ONEMONTH
+} e_rtc_int_period_t;
 
 /***********************************************************************************************************************
 Global functions
 ***********************************************************************************************************************/
+void R_Config_RTC_Create(void);
+void R_Config_RTC_Start(void);
+void R_Config_RTC_Stop(void);
+MD_STATUS R_Config_RTC_Set_HourSystem(e_rtc_hour_system_t hour_system);
+MD_STATUS R_Config_RTC_Get_CounterValue(st_rtc_counter_value_t * const counter_read_val);
+MD_STATUS R_Config_RTC_Set_CounterValue(st_rtc_counter_value_t counter_write_val);
+void R_Config_RTC_Create_UserInit(void);
 /* Start user code for function. Do not edit comment generated here */
 /* End user code. Do not edit comment generated here */
 #endif
-

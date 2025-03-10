@@ -51,9 +51,9 @@ typedef enum {
 } state_t;
 
 // Necessary for data flash access
-#define WRITE_BUFFER_SIZE 	2U
-#define DF_WRITE_START_ADDRESS    (0x000F1000uL)
-
+#define WRITE_BUFFER_SIZE_FLASH 	2U
+#define DF_WRITE_START_ADDRESS    	(0x000F1000uL)
+#define WRITE_BUFFER_SIZE_UART		50U
 /* Define global variables */
 static rm_hs400x_raw_data_t             gs_hs400x_raw_data;
 static volatile rm_hs400x_data_t        gs_hs400x_data;
@@ -63,11 +63,14 @@ extern bool								g_interrupt_flag_ADC;
 extern bool								g_interrupt_flag_UART;
 uint16_t								g_temperature_internal[1] = {0};
 uint8_t									g_dataFlash_blockNumber = 0;
+st_rtc_counter_value_t					g_rtc_counterValue;
+
 
 int main (void);
 void g_comms_i2c_bus0_quick_setup(void);
 void g_hs400x_sensor0_quick_setup(void);
 void timer_callback(void);
+uint8_t bcd_to_decimal(uint8_t bcd);
 
 /* Quick setup for g_comms_i2c_bus0. */
 void g_comms_i2c_bus0_quick_setup(void)
@@ -148,9 +151,14 @@ int main(void)
 	// Config UART
 	R_Config_UARTA1_Create();
 
+	// Configure the RTC
+	R_Config_RTC_Create();
+	R_Config_RTC_Start();
+
 
 	//=======================================
 	MD_STATUS g_uarta1_tx_end = 0U;     /* uartA0 transmission end */
+
 	// Main loop
 	while(1){
 
@@ -185,6 +193,8 @@ int main(void)
 				//err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
 				//TODO: Hier muss der Sensor eingebunden werden
 				gs_hs400x_data;
+
+
 
 				g_currentState = (err == FSP_SUCCESS) ? STATE_READ_INTERNAL_TEMPERATURE : STATE_ERROR;
 				break;
@@ -231,14 +241,14 @@ int main(void)
 
 				// Write data to the block
 				/*Since the size of the datatype is uint16, it takes 2 bytes of space*/
-				uint8_t write_buffer[WRITE_BUFFER_SIZE] = {
+				uint8_t write_buffer[WRITE_BUFFER_SIZE_FLASH] = {
 				    (uint8_t)(g_temperature_internal[0] & 0xFF),       // Low-Byte
 				    (uint8_t)((g_temperature_internal[0] >> 8) & 0xFF) // High-Byte
 				};
 
 
 				uint16_t byte_count = 0;
-				for (byte_count = 0; byte_count < WRITE_BUFFER_SIZE; byte_count++)
+				for (byte_count = 0; byte_count < WRITE_BUFFER_SIZE_FLASH; byte_count++)
 				{
 
 					R_RFD_WriteDataFlashReq(DF_WRITE_START_ADDRESS + (g_dataFlash_blockNumber*4) + byte_count, &write_buffer[byte_count] );
@@ -267,15 +277,25 @@ int main(void)
 				if(g_dataFlash_blockNumber > 9) g_dataFlash_blockNumber = 0;
 				break;
 			case STATE_PRINT_DATA:
-				// Print Sensor Data to terminal
+				// Use the RTC to Add a Timestamp
+				R_Config_RTC_Get_CounterValue(&g_rtc_counterValue);
+
+				// Convert BCD to decimal for readable output
+				uint8_t hour = bcd_to_decimal(g_rtc_counterValue.hour);
+				uint8_t minute = bcd_to_decimal(g_rtc_counterValue.min);
+				uint8_t second = bcd_to_decimal(g_rtc_counterValue.sec);
+
+				// Prepare text output buffer
+				char tx_buf1[WRITE_BUFFER_SIZE_UART] = {0};
+				uint16_t length = sprintf(tx_buf1,
+				                     "%02d:%02d:%02d | Int: %d (raw) | Ext: %d.%02d C\r\n",
+				                     hour, minute, second,
+				                     g_temperature_internal[0],
+									 gs_hs400x_data.temperature.integer_part, gs_hs400x_data.temperature.decimal_part);
+
+				// UART senden, aber nur die relevante Länge
 				R_Config_UARTA1_Start();
-
-				uint8_t tx_buf1[WRITE_BUFFER_SIZE] = {
-					(uint8_t)((g_temperature_internal[0] >> 8) & 0xFF), // High-Byte
-					(uint8_t)(g_temperature_internal[0] & 0xFF)       // Low-Byte
-				};
-
-				g_uarta1_tx_end = R_Config_UARTA1_Send(tx_buf1, sizeof(tx_buf1));
+				g_uarta1_tx_end = R_Config_UARTA1_Send(tx_buf1,length);
 
 				// blocking: wait until transmitting done
 				while(!g_interrupt_flag_UART);
@@ -285,6 +305,8 @@ int main(void)
 
 				g_currentState = STATE_WAITING;
 				break;
+
+
 			case STATE_ERROR:
 				//R_Config_TAU0_0_Stop();
 				PIN_WRITE(LED2) = false; // Set LEDs High
@@ -297,4 +319,11 @@ int main(void)
 	}
 
     return 0;
+}
+
+// Custom Functions
+// Convert BCD to decimal
+uint8_t bcd_to_decimal(uint8_t bcd)
+{
+	return ((bcd >> 4) * 10) + (bcd & 0x0F);
 }

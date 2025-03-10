@@ -31,6 +31,7 @@ Includes
 #include "Config_IICA0.h"
 #include "Config_PORT.h"
 #include "Config_ADC.h"
+#include "Config_RTC.h"
 #include "r_cg_uarta_common.h"
 #include "r_cg_tau_common.h"
 /* Start user code for include. Do not edit comment generated here */
@@ -66,4 +67,5 @@ void R_Systeminit(void)
     R_UARTA_Create();
     R_Config_IICA0_Create();
     R_Config_ADC_Create();
+    R_Config_RTC_Create();
 }

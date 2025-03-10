@@ -1058,6 +1058,103 @@
             </allocator>
             <source description="Code generator components provide peripheral drivers with customized generated source geared towards small code size" display="Code Generator" id="com.renesas.smc.tools.swcomponent.codegenerator.source"/>
         </configuration>
+        <configuration apiMode="FULL_API" id="2d181209-2b50-4a2e-95a1-439690f027aa" inuse="true" name="Config_RTC">
+            <allocatable id="RTC">
+                <isocket id="fCLK" selection="Clock.tool_clock_fCLK" value="3.2E7"/>
+                <isocket id="fCLK_MAX" selection="Clock.tool_clock_fCLK_MAX" value="3.2E7"/>
+                <isocket id="clockfSXR_fSXP" selection="Clock.tool_clock_fSXR_fSXL" value="32768.0"/>
+                <isocket id="clockfIL_fSXP" selection="Clock.tool_clock_fIL_fSXL" value="32768.0"/>
+                <option enabled="true" id="clocksource" selection="subclock">
+                    <item id="subclock" input="" vlaue="0"/>
+                    <item id="rtcclock" input="" vlaue="0"/>
+                    <item id="lowspeedclock" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="hourmode" selection="24hour">
+                    <item id="12hour" input="" vlaue="0"/>
+                    <item id="24hour" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="setinitvalue" selection="check">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="initdate" selection="dynamic">
+                    <item id="dynamic" input="2025,3,7" vlaue="0"/>
+                </option>
+                <option enabled="true" id="inittime" selection="dynamic">
+                    <item id="dynamic" input="12,0,0" vlaue="0"/>
+                </option>
+                <option enabled="true" id="enable1hzout" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="true" id="alarmdetect" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="alarminit" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="sunday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="monday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="tuesday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="wednesday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="thursday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="friday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="saturday" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="alarminittime" selection="dynamic">
+                    <item id="dynamic" input="12,0" vlaue="0"/>
+                </option>
+                <option enabled="true" id="constperiodint" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="period" selection="per05s">
+                    <item id="per05s" input="" vlaue="0"/>
+                    <item id="per1s" input="" vlaue="0"/>
+                    <item id="per1m" input="" vlaue="0"/>
+                    <item id="per1h" input="" vlaue="0"/>
+                    <item id="per1d" input="" vlaue="0"/>
+                    <item id="per1month" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="alarmint" selection="uncheck">
+                    <item id="uncheck" input="" vlaue="0"/>
+                    <item id="check" input="" vlaue="0"/>
+                </option>
+                <option enabled="false" id="priority" selection="Level3">
+                    <item id="Level0" input="" vlaue="0"/>
+                    <item id="Level1" input="" vlaue="0"/>
+                    <item id="Level2" input="" vlaue="0"/>
+                    <item id="Level3" input="" vlaue="0"/>
+                </option>
+            </allocatable>
+            <component description="The real-time clock (RTC) is function that provides information about the present time and date and can generate wake-up signals (interrupts, alarms)." detailDescription="" display="Real-Time Clock" id="com.renesas.smc.tools.swcomponent.codegenerator.rl78.rtc" version="1.5.0"/>
+            <allocator channelLevel0="" channelLevel1="" channelLevel2="" channelLevel3="" channelLevel4="" channelLevel5="" description="Real-time Clock" display="RTC" id="com.renesas.smc.tools.swcomponent.codegenerator.rtc.rl78g23.rtc" type="RTC">
+                <context/>
+            </allocator>
+            <source description="Code generator components provide peripheral drivers with customized generated source geared towards small code size" display="Code Generator" id="com.renesas.smc.tools.swcomponent.codegenerator.source"/>
+        </configuration>
     </tool>
     <tool id="System">
         <section id="ocd">
