@@ -51,7 +51,7 @@ typedef enum {
 } state_t;
 
 // Necessary for data flash access
-#define WRITE_BUFFER_SIZE_FLASH 	2U
+#define WRITE_BUFFER_SIZE_FLASH 	6U
 #define DF_WRITE_START_ADDRESS    	(0x000F1000uL)
 #define WRITE_BUFFER_SIZE_UART		50U
 /* Define global variables */
@@ -223,8 +223,7 @@ int main(void)
 				R_Config_ADC_Get_Result_12bit(g_temperature_internal);
 				R_Config_ADC_Stop ();
 
-				//TODO: Change to STORE DATA
-				g_currentState = STATE_PRINT_DATA;
+				g_currentState = STATE_STORE_VALUE;
 				break;
 			case STATE_STORE_VALUE:
 				// Store the Data in the Data Flash
@@ -250,10 +249,17 @@ int main(void)
 			    }
 
 				// Write data to the block
-				/*Since the size of the datatype is uint16, it takes 2 bytes of space*/
+				uint16_t integer_external_temp = gs_hs400x_data.temperature.integer_part;
+				uint16_t decimal_external_temp = gs_hs400x_data.temperature.decimal_part;
+
+				/*Since the size of the datatype of internal temperature and external is uint16, it takes 2 bytes of space*/
 				uint8_t write_buffer[WRITE_BUFFER_SIZE_FLASH] = {
 				    (uint8_t)(g_temperature_internal[0] & 0xFF),       // Low-Byte
-				    (uint8_t)((g_temperature_internal[0] >> 8) & 0xFF) // High-Byte
+				    (uint8_t)((g_temperature_internal[0] >> 8) & 0xFF), // High-Byte
+					(uint8_t)(integer_external_temp & 0xFF),       // Low-Byte
+					(uint8_t)((integer_external_temp >> 8) & 0xFF), // High-Byte
+					(uint8_t)(decimal_external_temp & 0xFF),       // Low-Byte
+					(uint8_t)((decimal_external_temp >> 8) & 0xFF) // High-Byte
 				};
 
 
@@ -281,7 +287,7 @@ int main(void)
 //				{
 //					g_currentState = STATE_ERROR;
 //				}
-				g_currentState = STATE_WAITING;
+				g_currentState = STATE_PRINT_DATA;
 				//P5_bit.no3 = 0;
 				g_dataFlash_blockNumber++;
 				if(g_dataFlash_blockNumber > 9) g_dataFlash_blockNumber = 0;
