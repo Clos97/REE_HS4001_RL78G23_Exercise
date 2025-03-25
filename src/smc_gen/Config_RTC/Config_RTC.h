@@ -46,7 +46,7 @@ Macro definitions
 #define _07_RTC_COUNTER_DAY                  (0x07U)
 #define _03_RTC_COUNTER_MONTH                (0x03U)
 #define _25_RTC_COUNTER_YEAR                 (0x25U)
-#define RTC_WAITTIME_2CYCLE                  (163U)    /* wait for 2 cycles of the operating clock */
+#define RTC_WAITTIME_2CYCLE                  (41U)    /* wait for 2 cycles of the operating clock */
 
 /***********************************************************************************************************************
 Typedef definitions

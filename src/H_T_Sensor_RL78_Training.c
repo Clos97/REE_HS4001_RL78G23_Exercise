@@ -61,6 +61,7 @@ static fsp_err_t						err;
 state_t									g_currentState = STATE_WAITING;
 extern bool								g_interrupt_flag_ADC;
 extern bool								g_interrupt_flag_UART;
+extern bool								g_interrupt_flag_USRSW;
 uint16_t								g_temperature_internal[1] = {0};
 uint8_t									g_dataFlash_blockNumber = 0;
 st_rtc_counter_value_t					g_rtc_counterValue;
@@ -318,12 +319,20 @@ int main(void)
 			case STATE_ENTERING_LPM:
 				// Stop the timer in order to enter LPM
 				R_Config_TAU0_0_Stop();
+				// Turn LED Off for additional power Saving
+				PIN_WRITE(LED1) = true;
+				g_interrupt_flag_USRSW = false; // reset interrupt flag otherwise the loop will be skipped
+				do{
+					STOP();
+				}while(!g_interrupt_flag_USRSW);
 
 				break;
 			case STATE_ESCAPING_LPM:
 				// Start the timer Again and continue with the normal work
 				R_Config_TAU0_0_Start();
+				g_interrupt_flag_USRSW = false;
 				g_currentState = STATE_WAITING;
+
 				break;
 
 			case STATE_ERROR:

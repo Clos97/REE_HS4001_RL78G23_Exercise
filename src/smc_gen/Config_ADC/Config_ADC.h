@@ -43,7 +43,7 @@ Macro definitions
 #define _FF_AD_ADUL_VALUE               (0xFFU)
 /* Lower bound (ADLL) value */
 #define _00_AD_ADLL_VALUE               (0x00U)
-#define AD_WAITTIME_B                   (8U)    /* wait for 1us + 2fAD as default,
+#define AD_WAITTIME_B                   (1U)    /* wait for 1us + 2fAD as default,
                                                    please change the waiting time value according to the system */
 
 /***********************************************************************************************************************

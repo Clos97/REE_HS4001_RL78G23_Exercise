@@ -41,8 +41,8 @@ Macro definitions
 ***********************************************************************************************************************/
 
 #define _10_IICA0_MASTERADDRESS                (0x10U)    /* IICA0 address */
-#define _4C_IICA0_IICWL_VALUE                  (0x4CU)
-#define _55_IICA0_IICWH_VALUE                  (0x55U)
+#define _26_IICA0_IICWL_VALUE                  (0x26U)
+#define _2B_IICA0_IICWH_VALUE                  (0x2BU)
 
 /***********************************************************************************************************************
 Typedef definitions

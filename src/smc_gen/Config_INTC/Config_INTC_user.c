@@ -30,6 +30,7 @@ Includes
 #include "r_cg_userdefine.h"
 #include "Config_INTC.h"
 /* Start user code for include. Do not edit comment generated here */
+bool 	g_interrupt_flag_USRSW = false;
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -66,6 +67,7 @@ void R_Config_INTC_Create_UserInit(void)
 static void __near r_Config_INTC_intp0_interrupt(void)
 {
     /* Start user code for r_Config_INTC_intp0_interrupt. Do not edit comment generated here */
+	g_interrupt_flag_USRSW = true;
 	external_button_callback();
 	/* End user code. Do not edit comment generated here */
 }
