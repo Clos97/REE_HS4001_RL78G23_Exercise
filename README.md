@@ -19,7 +19,7 @@ Diese Training Exercise wurde mir von Panagiotis Moustakas im Rahmen meines Ramp
 - Display it on a Serial Terminal ✔️
 - Implementing the internal temperature sensor: 
   - Read temperature from the RL78 Internal Temperature Sensor ✔️
-  - Store it into the Data Flash ⏳
+  - Store it into the Data Flash ✔️
   - Display it on a Serial Terminal ✔️ -> Displaying just as raw data
   - Compare both temperatures, store it into the Data Flash & display the result. ❌
 - Reading the Data Periodically:  
