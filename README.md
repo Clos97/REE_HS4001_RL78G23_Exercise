@@ -14,7 +14,7 @@ Diese Training Exercise wurde mir von Panagiotis Moustakas im Rahmen meines Ramp
   - Any Renesas sensor like HS400x
 
 ### Main parts
-- Read temperature from the Sensor via I2C ❌ -> Sensor not working. Currently just 0.00 °C
+- Read temperature from the Sensor via I2C ✔️
 - Store the Data in the Data Flash ✔️
 - Display it on a Serial Terminal ✔️
 - Implementing the internal temperature sensor: 
