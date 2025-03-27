@@ -200,7 +200,7 @@ int main(void)
 
 				break;
 			case STATE_READ_HT_SENSOR_CALC:
-				//err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
+				err = RM_HS400X_DataCalculate(g_hs400x_sensor0.p_ctrl,&gs_hs400x_raw_data,(rm_hs400x_data_t *)&gs_hs400x_data);
 				//TODO: Hier muss der Sensor eingebunden werden
 				gs_hs400x_data;
 
@@ -325,6 +325,7 @@ int main(void)
 			case STATE_ENTERING_LPM:
 				// Stop the timer in order to enter LPM
 				R_Config_TAU0_0_Stop();
+				PIN_WRITE(LED2) = true; // Set LEDs High
 				// Turn LED Off for additional power Saving
 				PIN_WRITE(LED1) = true;
 				g_interrupt_flag_USRSW = false; // reset interrupt flag otherwise the loop will be skipped
