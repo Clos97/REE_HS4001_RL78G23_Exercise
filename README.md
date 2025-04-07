@@ -1,6 +1,6 @@
 # REE_HS4001_RL78G23_Exercise
 
-Diese Training Exercise wurde mir von Panagiotis Moustakas im Rahmen meines Rampups bei Renesas gestellt. Das training dient dem Zweck die Grundlagen des RL78/G23 zu erlernen.
+Diese Training Exercise wurde mir von Panos M im Rahmen meines Rampups bei Renesas gestellt. Das training dient dem Zweck die Grundlagen des RL78/G23 zu erlernen.
 
 
 | ![](https://www.renesas.com/sites/default/files/styles/two_columns/public/qciot-hs4001pocz-pmod-board.jpg?itok=tpyNxCd1)                                                        | ![](https://www.renesas.com/sites/default/files/rl78-g23-64p-fpb-board-box.jpg)                                                                                                                                                                         |
@@ -89,7 +89,7 @@ _Optional:_ implement security & encryption  (discuss with finish the project) �
 - Zum Implementieren müssen keine Einstellungen getroffen werden (nur Generade Code)
 - Enablen des Data flashes im `r_bsp` Stack
 - Dieses 📹[Video](https://www.renesas.com/en/video/how-use-renesas-flash-driver-rl78-type-01-sc-version-e-studio) hilft bei der Implementierung
-- [[Alexandros Zikas]] schickt mir die folgenden Informationen: 
+- Alexandros Z schickt mir die folgenden Informationen: 
 	- ❓[Community: How to create a project from scratch to use the Renesas Flash Driver RL78 Type 01 on RL78/G2x devices ?](https://en-support.renesas.com/knowledgeBase/21757166)
 	- 📚[6.1.3.2 The setting of user definition macro](https://www.renesas.com/en/document/man/renesas-flash-driver-rl78-type-01-users-manual-rl78g23)
 - Implementierung erfolgreich mit Hilfe des Beispielcodes. 
